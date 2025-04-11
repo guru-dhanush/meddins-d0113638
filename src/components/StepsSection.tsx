@@ -23,7 +23,7 @@ const StepCard = ({ icon: Icon, title, description, stepNumber, isActive }) => {
 const StepsSection = () => {
   const controls = useAnimation();
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, threshold: 0.5 });
+  const inView = useInView(ref, { once: false }); // Removed the invalid 'threshold' property
   
   const [activeStep, setActiveStep] = React.useState(1);
   
