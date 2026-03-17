@@ -1,0 +1,1 @@
+ALTER TABLE public.user_settings ADD COLUMN IF NOT EXISTS connection_visibility text NOT NULL DEFAULT 'public';

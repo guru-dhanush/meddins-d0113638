@@ -1,73 +1,98 @@
-# Welcome to your Lovable project
+# 🏥 Meddin — Healthcare Services Marketplace
 
-## Project info
+A full-stack **healthcare SaaS platform** that connects **patients** with **healthcare providers** (doctors, nurses, caretakers). Think of it like an "Linkedin + Reddit + Uber for healthcare" — a booking marketplace with social features and AI assistance.
 
-**URL**: https://lovable.dev/projects/18abfd31-1803-4fce-b732-c737acbca3dc
+## 🛠 Tech Stack
 
-## How can I edit this code?
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 18 + TypeScript + Vite |
+| **UI** | Tailwind CSS + shadcn/ui (Radix primitives) |
+| **Backend/DB** | Supabase (PostgreSQL + Auth + RLS) |
+| **State** | TanStack React Query |
+| **Routing** | React Router v6 |
+| **Animations** | Framer Motion |
+| **Maps** | Leaflet (for provider locations) |
+| **Charts** | Recharts |
 
-There are several ways of editing your application.
+## 👥 User Roles
 
-**Use Lovable**
+- **Patients** — Browse providers, book appointments, leave reviews, view social feed
+- **Providers** (Doctor / Nurse / Caretaker) — Manage profile, services, availability, accept/decline bookings
+- **Organizations** — Manage teams of providers, bookings, and org profiles
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/18abfd31-1803-4fce-b732-c737acbca3dc) and start prompting.
+## 📄 Key Pages & Features
 
-Changes made via Lovable will be committed automatically to this repo.
+| Page | Purpose |
+|---|---|
+| `/auth` | Authentication (signup/login via Supabase Auth) |
+| `/select-role` | Onboarding — choose Patient or Provider role |
+| `/` & `/feed` | **Social feed** — users post health-related content, like & comment |
+| `/post` | Create a new post |
+| `/dashboard` | **Provider dashboard** — view/manage incoming bookings |
+| `/providers` | **Browse providers** — search by type, view on a map |
+| `/provider/:id` | Public provider profile with booking dialog |
+| `/provider-profile/edit` | Providers edit their profile, services, qualifications |
+| `/profile` & `/user/:id` | User profile page |
+| `/messages` | **Messaging** between patients and providers |
+| `/org/*` | Organization dashboard, team management, bookings, profile |
+| `/upgrade-to-provider` | Patients can upgrade to provider status |
+| `/invitations` | Manage org invitations |
+| `/ai-chat` | **AI Chat assistant** for health-related queries |
 
-**Use your preferred IDE**
+## 🗄️ Database Schema (Supabase/Postgres)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The database includes **23 migrations** and the following core models:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- `profiles` — User profiles (name, avatar, phone, address)
+- `user_roles` — Role assignment (patient/provider)
+- `provider_profiles` — Provider details (type, bio, qualifications, hourly rate, location, ratings)
+- `services` — Services offered by providers (name, price, duration)
+- `bookings` — Appointment bookings with status tracking (pending → accepted → completed)
+- `reviews` — Post-booking reviews (1–5 stars)
+- `availability` — Provider weekly schedule slots
+- `posts`, `post_likes`, `post_comments` — Social feed system
 
-Follow these steps:
+All tables use **Row Level Security (RLS)** for access control.
+
+## 🔑 Key Architectural Patterns
+
+- **Auth-gated routes** — most pages redirect to `/auth` if not logged in
+- **Real-time data** via Supabase client queries
+- **Component library** — 49 shadcn/ui components + 13 custom components
+- **Responsive design** with mobile bottom navigation (`BottomNav`)
+- **Context-based auth** via `AuthContext`
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js & npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd Meddin
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Available Scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/18abfd31-1803-4fce-b732-c737acbca3dc) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+| Script | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run build:dev` | Development build |
+| `npm run lint` | Run ESLint |
+| `npm run preview` | Preview production build |
+| `npm run test` | Run tests |
+| `npm run test:watch` | Run tests in watch mode |
