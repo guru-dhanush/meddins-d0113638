@@ -72,6 +72,7 @@ export type Database = {
       }
       availability: {
         Row: {
+          consultation_mode: string | null
           day_of_week: number
           end_time: string
           id: string
@@ -80,6 +81,7 @@ export type Database = {
           start_time: string
         }
         Insert: {
+          consultation_mode?: string | null
           day_of_week: number
           end_time: string
           id?: string
@@ -88,6 +90,7 @@ export type Database = {
           start_time: string
         }
         Update: {
+          consultation_mode?: string | null
           day_of_week?: number
           end_time?: string
           id?: string
@@ -340,6 +343,91 @@ export type Database = {
         }
         Relationships: []
       }
+      follow_ups: {
+        Row: {
+          auto_booked: boolean | null
+          booking_id: string | null
+          created_at: string
+          follow_up_date: string
+          id: string
+          new_booking_id: string | null
+          patient_id: string
+          provider_id: string
+          reason: string | null
+          status: string | null
+        }
+        Insert: {
+          auto_booked?: boolean | null
+          booking_id?: string | null
+          created_at?: string
+          follow_up_date: string
+          id?: string
+          new_booking_id?: string | null
+          patient_id: string
+          provider_id: string
+          reason?: string | null
+          status?: string | null
+        }
+        Update: {
+          auto_booked?: boolean | null
+          booking_id?: string | null
+          created_at?: string
+          follow_up_date?: string
+          id?: string
+          new_booking_id?: string | null
+          patient_id?: string
+          provider_id?: string
+          reason?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follow_ups_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follow_ups_new_booking_id_fkey"
+            columns: ["new_booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follow_ups_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_record_folders: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          parent_category: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          parent_category?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          parent_category?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       health_record_shares: {
         Row: {
           created_at: string
@@ -380,7 +468,9 @@ export type Database = {
           file_type: string | null
           file_url: string | null
           folder: string | null
+          folder_id: string | null
           id: string
+          record_date: string | null
           title: string
           updated_at: string
           user_id: string
@@ -392,7 +482,9 @@ export type Database = {
           file_type?: string | null
           file_url?: string | null
           folder?: string | null
+          folder_id?: string | null
           id?: string
+          record_date?: string | null
           title: string
           updated_at?: string
           user_id: string
@@ -404,12 +496,22 @@ export type Database = {
           file_type?: string | null
           file_url?: string | null
           folder?: string | null
+          folder_id?: string | null
           id?: string
+          record_date?: string | null
           title?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "health_records_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "health_record_folders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       messages: {
         Row: {
@@ -849,6 +951,7 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          banner_url: string | null
           bio: string | null
           certifications: Json | null
           created_at: string
@@ -864,6 +967,7 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          banner_url?: string | null
           bio?: string | null
           certifications?: Json | null
           created_at?: string
@@ -879,6 +983,7 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          banner_url?: string | null
           bio?: string | null
           certifications?: Json | null
           created_at?: string
@@ -906,6 +1011,7 @@ export type Database = {
           consultation_fee: number | null
           consultation_modes: string[] | null
           created_at: string
+          currency: string | null
           date_of_birth: string | null
           education: Json | null
           email: string | null
@@ -947,6 +1053,7 @@ export type Database = {
           consultation_fee?: number | null
           consultation_modes?: string[] | null
           created_at?: string
+          currency?: string | null
           date_of_birth?: string | null
           education?: Json | null
           email?: string | null
@@ -988,6 +1095,7 @@ export type Database = {
           consultation_fee?: number | null
           consultation_modes?: string[] | null
           created_at?: string
+          currency?: string | null
           date_of_birth?: string | null
           education?: Json | null
           email?: string | null
@@ -1147,8 +1255,42 @@ export type Database = {
           },
         ]
       }
+      service_pricing: {
+        Row: {
+          consultation_mode: string
+          created_at: string
+          id: string
+          price: number
+          service_id: string
+        }
+        Insert: {
+          consultation_mode: string
+          created_at?: string
+          id?: string
+          price?: number
+          service_id: string
+        }
+        Update: {
+          consultation_mode?: string
+          created_at?: string
+          id?: string
+          price?: number
+          service_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_pricing_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       services: {
         Row: {
+          consultation_mode: string | null
+          consultation_modes: string[] | null
           created_at: string
           description: string | null
           duration_minutes: number | null
@@ -1158,6 +1300,8 @@ export type Database = {
           provider_id: string
         }
         Insert: {
+          consultation_mode?: string | null
+          consultation_modes?: string[] | null
           created_at?: string
           description?: string | null
           duration_minutes?: number | null
@@ -1167,6 +1311,8 @@ export type Database = {
           provider_id: string
         }
         Update: {
+          consultation_mode?: string | null
+          consultation_modes?: string[] | null
           created_at?: string
           description?: string | null
           duration_minutes?: number | null
@@ -1199,6 +1345,57 @@ export type Database = {
         Update: {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          booking_auto_confirm: boolean | null
+          booking_buffer_minutes: number | null
+          cancellation_policy: string | null
+          connection_requests: string | null
+          connection_visibility: string | null
+          created_at: string
+          default_consultation_mode: string | null
+          hide_from_search: boolean | null
+          id: string
+          message_privacy: string | null
+          profile_visibility: string | null
+          show_online_status: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          booking_auto_confirm?: boolean | null
+          booking_buffer_minutes?: number | null
+          cancellation_policy?: string | null
+          connection_requests?: string | null
+          connection_visibility?: string | null
+          created_at?: string
+          default_consultation_mode?: string | null
+          hide_from_search?: boolean | null
+          id?: string
+          message_privacy?: string | null
+          profile_visibility?: string | null
+          show_online_status?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          booking_auto_confirm?: boolean | null
+          booking_buffer_minutes?: number | null
+          cancellation_policy?: string | null
+          connection_requests?: string | null
+          connection_visibility?: string | null
+          created_at?: string
+          default_consultation_mode?: string | null
+          hide_from_search?: boolean | null
+          id?: string
+          message_privacy?: string | null
+          profile_visibility?: string | null
+          show_online_status?: boolean | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
