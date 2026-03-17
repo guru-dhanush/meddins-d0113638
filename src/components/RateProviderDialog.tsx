@@ -65,6 +65,7 @@ const RateProviderDialog = ({
       }
 
       const { error } = await supabase.from("reviews").insert({
+        booking_id: bookingId,
         provider_id: providerId,
         patient_id: user.id,
         rating,
