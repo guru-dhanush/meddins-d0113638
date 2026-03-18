@@ -202,18 +202,20 @@ const HealthRecords = () => {
   })();
 
   return (
-    <AppLayout>
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-5">
+    <AppLayout className="p-0">
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-background md:rounded-md md:my-4 md:mx-4 lg:mx-auto">
+          <div className="px-4 py-4 space-y-5">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
+          <div className="min-w-0">
             <h1 className="text-2xl font-bold">Health Records</h1>
             <div className="flex items-center gap-2 mt-1">
-              <p className="text-sm text-muted-foreground">Securely store & share medical documents</p>
+              <p className="text-sm text-muted-foreground hidden sm:block">Securely store & share medical documents</p>
               <div className="relative group">
                 <div className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800 cursor-help">
                   <ShieldCheck className="h-3 w-3" />
-                  <span className="font-medium">Secured</span>
+                  <span className="font-medium hidden sm:inline">Secured</span>
                 </div>
                 {/* Hover tooltip */}
                 <div className="absolute left-0 top-full mt-2 z-50 w-64 p-3 rounded-lg border bg-popover text-popover-foreground shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -230,14 +232,14 @@ const HealthRecords = () => {
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 shrink-0">
             {viewState.type !== "root" && (
               <Button variant="outline" size="sm" onClick={() => { setFolderDialogOpen(true); setEditingFolder(null); setNewFolderName(""); }}>
-                <FolderPlus className="h-4 w-4 mr-1" /> Folder
+                <FolderPlus className="h-4 w-4 sm:mr-1" /> <span className="hidden sm:inline">Folder</span>
               </Button>
             )}
-            <Button onClick={() => setUploadOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Upload
+            <Button size="sm" onClick={() => setUploadOpen(true)}>
+              <Plus className="h-4 w-4 sm:mr-1" /> <span className="hidden sm:inline">Upload</span>
             </Button>
           </div>
         </div>
@@ -451,6 +453,8 @@ const HealthRecords = () => {
             </div>
           </DialogContent>
         </Dialog>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );
