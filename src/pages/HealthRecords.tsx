@@ -453,6 +453,8 @@ const HealthRecords = () => {
             </div>
           </DialogContent>
         </Dialog>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );
