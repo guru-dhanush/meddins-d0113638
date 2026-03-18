@@ -926,14 +926,22 @@ const Chats = () => {
                 <div className="fixed inset-0 z-40" onClick={() => setShowEmoji(false)} />
             )}
 
-            <AppLayout className="hidden lg:block">
-                <ChatLayout
-                    sidebarContent={SidebarContent}
-                    mainContent={mainContent}
-                    showSidebarOnMobile={mode === "direct" && !activeChatId}
-                />
-            </AppLayout>
+            {/* Desktop: inside AppLayout with Browse/Communities-style wrapper */}
+            <div className="hidden lg:block">
+                <AppLayout className="p-0">
+                    <div className="container max-w-6xl mx-auto p-2 md:p-4">
+                        <div className="bg-background rounded-none md:rounded-md overflow-hidden">
+                            <ChatLayout
+                                sidebarContent={SidebarContent}
+                                mainContent={mainContent}
+                                showSidebarOnMobile={mode === "direct" && !activeChatId}
+                            />
+                        </div>
+                    </div>
+                </AppLayout>
+            </div>
 
+            {/* Mobile: fullscreen overlay */}
             <div className="lg:hidden">
                 <ChatLayout
                     sidebarContent={SidebarContent}

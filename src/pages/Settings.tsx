@@ -746,65 +746,69 @@ const Settings = () => {
   };
 
   return (
-    <AppLayout>
-      <div className="container max-w-5xl py-6 px-4">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-          <p className="text-sm text-muted-foreground mt-1">Manage your account, privacy, and preferences</p>
+    <AppLayout className="p-0">
+      <div className="container max-w-6xl mx-auto p-2 md:p-4">
+        <div className="flex items-center justify-between mb-2 p-4 bg-background rounded-none md:rounded-md">
+          <div>
+            <h1 className="text-sm font-semibold text-foreground">Settings</h1>
+            <p className="text-xs text-muted-foreground">Manage your account, privacy, and preferences</p>
+          </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Sidebar nav — desktop */}
-          <nav className="hidden lg:block w-56 shrink-0">
-            <div className="sticky top-20 space-y-1">
-              {visibleSections.map((s) => {
-                const Icon = s.icon;
-                return (
-                  <button
-                    key={s.id}
-                    onClick={() => setActiveSection(s.id)}
-                    className={cn(
-                      "flex items-center gap-3 w-full rounded-lg px-3 py-2.5 text-sm font-medium transition-colors text-left",
-                      activeSection === s.id
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                    )}
-                  >
-                    <Icon className="h-4 w-4" />
-                    {s.label}
-                  </button>
-                );
-              })}
-            </div>
-          </nav>
+        <div className="bg-background p-4 rounded-none md:rounded-md">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Sidebar nav — desktop */}
+            <nav className="hidden lg:block w-56 shrink-0">
+              <div className="sticky top-20 space-y-1">
+                {visibleSections.map((s) => {
+                  const Icon = s.icon;
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setActiveSection(s.id)}
+                      className={cn(
+                        "flex items-center gap-3 w-full rounded-lg px-3 py-2.5 text-sm font-medium transition-colors text-left",
+                        activeSection === s.id
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                      )}
+                    >
+                      <Icon className="h-4 w-4" />
+                      {s.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>
 
-          {/* Mobile tabs — horizontal scroll */}
-          <div className="lg:hidden overflow-x-auto -mx-4 px-4">
-            <div className="flex gap-2 pb-3">
-              {visibleSections.map((s) => {
-                const Icon = s.icon;
-                return (
-                  <button
-                    key={s.id}
-                    onClick={() => setActiveSection(s.id)}
-                    className={cn(
-                      "flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-medium transition-colors border",
-                      activeSection === s.id
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-card text-muted-foreground border-border hover:border-primary/40"
-                    )}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {s.label}
-                  </button>
-                );
-              })}
+            {/* Mobile tabs — horizontal scroll */}
+            <div className="lg:hidden overflow-x-auto -mx-4 px-4">
+              <div className="flex gap-2 pb-3">
+                {visibleSections.map((s) => {
+                  const Icon = s.icon;
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setActiveSection(s.id)}
+                      className={cn(
+                        "flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-medium transition-colors border",
+                        activeSection === s.id
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-card text-muted-foreground border-border hover:border-primary/40"
+                      )}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      {s.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-          {/* Content */}
-          <div className="flex-1 min-w-0">
-            {renderSection()}
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              {renderSection()}
+            </div>
           </div>
         </div>
       </div>
