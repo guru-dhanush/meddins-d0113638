@@ -781,24 +781,23 @@ const Settings = () => {
               </div>
             </nav>
 
-            {/* Mobile tabs — horizontal scroll */}
+            {/* Mobile tabs — horizontal scroll, matches Communities FilterPill */}
             <div className="lg:hidden overflow-x-auto -mx-4 px-4">
-              <div className="flex gap-2 pb-3">
+              <div className="flex gap-1.5 pb-3">
                 {visibleSections.map((s) => {
                   const Icon = s.icon;
                   return (
                     <button
                       key={s.id}
                       onClick={() => setActiveSection(s.id)}
-                      className={cn(
-                        "flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-medium transition-colors border",
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                         activeSection === s.id
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "bg-card text-muted-foreground border-border hover:border-primary/40"
-                      )}
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      }`}
                     >
-                      <Icon className="h-3.5 w-3.5" />
-                      {s.label}
+                      <Icon className="h-3 w-3" />
+                      <span>{s.label}</span>
                     </button>
                   );
                 })}
