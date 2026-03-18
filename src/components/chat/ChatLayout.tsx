@@ -24,8 +24,8 @@ const ChatLayout = ({
             "bg-background flex",
             // Mobile: fixed fullscreen overlay
             "fixed inset-0 z-50",
-            // Desktop: inline, fill available height
-            "lg:static lg:z-auto lg:h-[calc(100vh-4rem)]",
+            // Desktop: inline, fill available height within container
+            "lg:static lg:z-auto lg:h-[calc(100vh-8rem)]",
             className
         )}>
             {/* Sidebar Area */}
