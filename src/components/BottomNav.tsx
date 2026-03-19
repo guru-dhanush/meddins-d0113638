@@ -6,29 +6,31 @@ import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Users, Layers, X } from "lucide-react";
-
-const modes: { value: AppMode; label: string; icon: typeof Layers }[] = [
-  { value: "all", label: "All", icon: Layers },
-  { value: "care", label: "Care", icon: Heart },
-  { value: "community", label: "Community", icon: Users },
-];
+import { useTranslation } from "react-i18next";
 
 const BottomNav = () => {
   const { user } = useAuth();
   const { mode, setMode } = useAppMode();
   const { unreadCount } = useUnreadMessages();
   const [showModeSheet, setShowModeSheet] = useState(false);
+  const { t } = useTranslation();
+
+  const modes: { value: AppMode; label: string; icon: typeof Layers; desc: string }[] = [
+    { value: "all", label: t("modes.all"), icon: Layers, desc: t("modes.allDesc") },
+    { value: "care", label: t("modes.care"), icon: Heart, desc: t("modes.careDesc") },
+    { value: "community", label: t("modes.community"), icon: Users, desc: t("modes.communityDesc") },
+  ];
 
   const navItems = useMemo(() => {
     const allItems = [
-      { to: "/feed", icon: "/icons/home.svg", label: "Home", modes: ["all", "care", "community"] },
-      { to: "/communities", icon: "/icons/community.svg", label: "Communities", modes: ["all", "community"] },
-      { to: "/providers", icon: "/icons/provider.svg", label: "Browse", modes: ["all", "care"] },
-      { to: "/messages", icon: "/icons/message.svg", label: "Chats", modes: ["all", "care", "community"], badge: unreadCount },
-      { to: user ? `/user/${user.id}` : "/profile", icon: "/icons/setting.svg", label: "Profile", modes: ["all", "care", "community"] },
+      { to: "/feed", icon: "/icons/home.svg", label: t("nav.home"), modes: ["all", "care", "community"] },
+      { to: "/communities", icon: "/icons/community.svg", label: t("nav.communities"), modes: ["all", "community"] },
+      { to: "/providers", icon: "/icons/provider.svg", label: t("nav.browse"), modes: ["all", "care"] },
+      { to: "/messages", icon: "/icons/message.svg", label: t("nav.chats"), modes: ["all", "care", "community"], badge: unreadCount },
+      { to: user ? `/user/${user.id}` : "/profile", icon: "/icons/setting.svg", label: t("nav.profile"), modes: ["all", "care", "community"] },
     ];
     return allItems.filter(item => item.modes.includes(mode));
-  }, [mode, user, unreadCount]);
+  }, [mode, user, unreadCount, t]);
 
   const handleModeSelect = (newMode: AppMode) => {
     setMode(newMode);
@@ -58,13 +60,13 @@ const BottomNav = () => {
               className="fixed bottom-0 left-0 right-0 z-[61] bg-card rounded-t-2xl border-t border-border shadow-lg pb-8"
             >
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
-                <h3 className="text-sm font-bold text-foreground">Switch Mode</h3>
+                <h3 className="text-sm font-bold text-foreground">{t("modes.switchMode")}</h3>
                 <button onClick={() => setShowModeSheet(false)} className="p-1 rounded-full hover:bg-muted">
                   <X className="h-4 w-4 text-muted-foreground" />
                 </button>
               </div>
               <div className="px-4 pb-4 space-y-1">
-                {modes.map(({ value, label, icon: Icon }) => (
+                {modes.map(({ value, label, icon: Icon, desc }) => (
                   <button
                     key={value}
                     onClick={() => handleModeSelect(value)}
@@ -83,11 +85,7 @@ const BottomNav = () => {
                     </div>
                     <div className="text-left">
                       <p className="font-semibold">{label}</p>
-                      <p className="text-[10px] text-muted-foreground">
-                        {value === "all" && "Full experience with all features"}
-                        {value === "care" && "Appointments, providers & health records"}
-                        {value === "community" && "Community posts & discussions"}
-                      </p>
+                      <p className="text-[10px] text-muted-foreground">{desc}</p>
                     </div>
                     {mode === value && (
                       <div className="ml-auto h-2 w-2 rounded-full bg-primary" />
@@ -127,7 +125,7 @@ const BottomNav = () => {
             className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 text-muted-foreground transition-all duration-150 opacity-60 hover:opacity-100"
           >
             <CurrentModeIcon className="h-5 w-5" />
-            <span className="text-[10px] font-medium">Mode</span>
+            <span className="text-[10px] font-medium">{t("nav.mode")}</span>
           </button>
         </div>
       </nav>

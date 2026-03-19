@@ -9,6 +9,7 @@ import { Loader2, Users, Plus, Sparkles, TrendingUp, Star, Clock, BarChart3, Hea
 import { CommunitySkeleton } from "@/components/skeletons/PageSkeletons";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 interface Community {
     id: string;
@@ -70,6 +71,7 @@ const FilterPill = ({
 const Communities = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [communities, setCommunities] = useState<Community[]>([]);
     const [joinedIds, setJoinedIds] = useState<Set<string>>(new Set());
@@ -117,15 +119,15 @@ const Communities = () => {
                 {/* Top action bar */}
                 <div className="flex items-center justify-between mb-2 p-4 bg-background rounded-none md:rounded-md">
                     <div>
-                        <h1 className="text-sm font-semibold text-foreground">Explore Communities</h1>
-                        <p className="text-xs text-muted-foreground">Find your health community</p>
+                        <h1 className="text-sm font-semibold text-foreground">{t("communities.title")}</h1>
+                        <p className="text-xs text-muted-foreground">{t("communities.subtitle")}</p>
                     </div>
                     <Button
                         onClick={() => setDialogOpen(true)}
                         size="sm"
                         className="gap-1.5 h-8 px-3 text-xs font-semibold"
                     >
-                        <Plus className="h-3.5 w-3.5" /> Create Community
+                        <Plus className="h-3.5 w-3.5" /> {t("communities.createCommunity")}
                     </Button>
                 </div>
 
@@ -167,10 +169,10 @@ const Communities = () => {
                     ) : communities.length === 0 ? (
                         <div className="text-center py-20">
                             <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold text-foreground">No communities found</h3>
-                            <p className="text-muted-foreground text-sm mb-4">Try a different category or create your own</p>
+                            <h3 className="text-lg font-semibold text-foreground">{t("communities.noCommunities")}</h3>
+                            <p className="text-muted-foreground text-sm mb-4">{t("communities.tryDifferent")}</p>
                             <Button onClick={() => setDialogOpen(true)} variant="outline" className="gap-2">
-                                <Plus className="h-4 w-4" /> Create Community
+                                <Plus className="h-4 w-4" /> {t("communities.createCommunity")}
                             </Button>
                         </div>
                     ) : (

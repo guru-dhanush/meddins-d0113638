@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Bell, Calendar, Check, CheckCheck, Loader2, MessageSquare, Settings, UserPlus, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type Notification = {
   id: string;
@@ -32,6 +33,7 @@ const typeIcon: Record<string, React.ReactNode> = {
 const Notifications = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -74,7 +76,7 @@ const Notifications = () => {
       .eq("user_id", user.id)
       .eq("is_read", false);
     setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
-    toast.success("All notifications marked as read");
+    toast.success(t("notifications.allMarkedRead"));
   };
 
   const markRead = async (id: string) => {
@@ -86,7 +88,7 @@ const Notifications = () => {
     if (!user) return;
     await supabase.from("notifications").delete().eq("user_id", user.id);
     setNotifications([]);
-    toast.success("All notifications cleared");
+    toast.success(t("notifications.allCleared"));
   };
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
@@ -106,20 +108,20 @@ const Notifications = () => {
       <div className="container max-w-6xl mx-auto p-2 md:p-4">
         <div className="flex items-center justify-between mb-2 p-4 bg-background rounded-none md:rounded-md">
           <div>
-            <h1 className="text-sm font-semibold text-foreground">Notifications</h1>
+            <h1 className="text-sm font-semibold text-foreground">{t("notifications.title")}</h1>
             {unreadCount > 0 && (
-              <p className="text-xs text-muted-foreground">{unreadCount} unread</p>
+              <p className="text-xs text-muted-foreground">{t("notifications.unread", { count: unreadCount })}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
             {unreadCount > 0 && (
               <Button variant="ghost" size="sm" onClick={markAllRead} className="h-8 text-xs">
-                <CheckCheck className="h-3.5 w-3.5 mr-1" /> Mark all read
+                <CheckCheck className="h-3.5 w-3.5 mr-1" /> {t("notifications.markAllRead")}
               </Button>
             )}
             {notifications.length > 0 && (
               <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 text-xs">
-                <Trash2 className="h-3.5 w-3.5 mr-1" /> Clear
+                <Trash2 className="h-3.5 w-3.5 mr-1" /> {t("notifications.clear")}
               </Button>
             )}
             <Button variant="outline" size="sm" onClick={() => navigate("/notification-settings")} className="h-8">
@@ -132,8 +134,8 @@ const Notifications = () => {
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <Bell className="h-12 w-12 text-muted-foreground/40 mb-4" />
-              <p className="text-lg font-medium text-muted-foreground">No notifications yet</p>
-              <p className="text-sm text-muted-foreground/70 mt-1">We'll notify you when something happens</p>
+              <p className="text-lg font-medium text-muted-foreground">{t("notifications.noNotifications")}</p>
+              <p className="text-sm text-muted-foreground/70 mt-1">{t("notifications.notifyWhen")}</p>
             </div>
           ) : (
             <div className="space-y-2">
