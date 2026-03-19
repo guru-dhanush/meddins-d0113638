@@ -76,7 +76,7 @@ const Notifications = () => {
       .eq("user_id", user.id)
       .eq("is_read", false);
     setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
-    toast.success("All notifications marked as read");
+    toast.success(t("notifications.allMarkedRead"));
   };
 
   const markRead = async (id: string) => {
