@@ -10,9 +10,6 @@ import { CommunitySkeleton } from "@/components/skeletons/PageSkeletons";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
-import { CommunitySkeleton } from "@/components/skeletons/PageSkeletons";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface Community {
     id: string;
