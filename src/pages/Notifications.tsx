@@ -88,7 +88,7 @@ const Notifications = () => {
     if (!user) return;
     await supabase.from("notifications").delete().eq("user_id", user.id);
     setNotifications([]);
-    toast.success("All notifications cleared");
+    toast.success(t("notifications.allCleared"));
   };
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
