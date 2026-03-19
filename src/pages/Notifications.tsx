@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Bell, Calendar, Check, CheckCheck, Loader2, MessageSquare, Settings, UserPlus, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type Notification = {
   id: string;
