@@ -108,20 +108,20 @@ const Notifications = () => {
       <div className="container max-w-6xl mx-auto p-2 md:p-4">
         <div className="flex items-center justify-between mb-2 p-4 bg-background rounded-none md:rounded-md">
           <div>
-            <h1 className="text-sm font-semibold text-foreground">Notifications</h1>
+            <h1 className="text-sm font-semibold text-foreground">{t("notifications.title")}</h1>
             {unreadCount > 0 && (
-              <p className="text-xs text-muted-foreground">{unreadCount} unread</p>
+              <p className="text-xs text-muted-foreground">{t("notifications.unread", { count: unreadCount })}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
             {unreadCount > 0 && (
               <Button variant="ghost" size="sm" onClick={markAllRead} className="h-8 text-xs">
-                <CheckCheck className="h-3.5 w-3.5 mr-1" /> Mark all read
+                <CheckCheck className="h-3.5 w-3.5 mr-1" /> {t("notifications.markAllRead")}
               </Button>
             )}
             {notifications.length > 0 && (
               <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 text-xs">
-                <Trash2 className="h-3.5 w-3.5 mr-1" /> Clear
+                <Trash2 className="h-3.5 w-3.5 mr-1" /> {t("notifications.clear")}
               </Button>
             )}
             <Button variant="outline" size="sm" onClick={() => navigate("/notification-settings")} className="h-8">
