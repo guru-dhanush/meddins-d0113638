@@ -74,6 +74,7 @@ const FilterPill = ({
 const Communities = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [communities, setCommunities] = useState<Community[]>([]);
     const [joinedIds, setJoinedIds] = useState<Set<string>>(new Set());
