@@ -122,15 +122,15 @@ const Communities = () => {
                 {/* Top action bar */}
                 <div className="flex items-center justify-between mb-2 p-4 bg-background rounded-none md:rounded-md">
                     <div>
-                        <h1 className="text-sm font-semibold text-foreground">Explore Communities</h1>
-                        <p className="text-xs text-muted-foreground">Find your health community</p>
+                        <h1 className="text-sm font-semibold text-foreground">{t("communities.title")}</h1>
+                        <p className="text-xs text-muted-foreground">{t("communities.subtitle")}</p>
                     </div>
                     <Button
                         onClick={() => setDialogOpen(true)}
                         size="sm"
                         className="gap-1.5 h-8 px-3 text-xs font-semibold"
                     >
-                        <Plus className="h-3.5 w-3.5" /> Create Community
+                        <Plus className="h-3.5 w-3.5" /> {t("communities.createCommunity")}
                     </Button>
                 </div>
 
