@@ -11,20 +11,20 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType>({
     theme: "system",
     setTheme: () => { },
-    resolvedTheme: "dark",
+    resolvedTheme: "light",
 });
 
 export const useTheme = () => useContext(ThemeContext);
 
 function getSystemTheme(): "dark" | "light" {
-    if (typeof window === "undefined") return "dark";
+    if (typeof window === "undefined") return "light";
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setThemeState] = useState<Theme>(() => {
         if (typeof window === "undefined") return "system";
-        return (localStorage.getItem("theme") as Theme) || "system";
+        return (localStorage.getItem("theme") as Theme) || "light";
     });
 
     const resolvedTheme = theme === "system" ? getSystemTheme() : theme;
