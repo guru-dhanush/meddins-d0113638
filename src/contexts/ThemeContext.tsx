@@ -11,7 +11,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType>({
     theme: "system",
     setTheme: () => { },
-    resolvedTheme: "dark",
+    resolvedTheme: "light",
 });
 
 export const useTheme = () => useContext(ThemeContext);
