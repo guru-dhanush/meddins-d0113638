@@ -13,31 +13,33 @@ import { useAppMode } from "@/contexts/AppModeContext";
 import { useUnreadMessages } from "@/hooks/use-unread-messages";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface DesktopNavProps {
     avatarUrl: string | null;
     initials: string;
 }
 
-const allNavItems = [
-    { to: "/feed", icon: "/icons/home.svg", label: "Home", modes: ["all", "care", "community"] },
-    { to: "/communities", icon: "/icons/community.svg", label: "Communities", modes: ["all", "community"] },
-    { to: "/providers", icon: "/icons/provider.svg", label: "Browse", modes: ["all", "care"] },
-    { to: "/messages", icon: "/icons/message.svg", label: "Chats", modes: ["all", "care", "community"], badgeKey: "messages" },
-    { to: "/notifications", icon: "/icons/notification.svg", label: "Notifications", modes: ["all", "care", "community"] },
-    { to: "/ai-chat", icon: "/icons/lightbulb.svg", label: "AI", modes: ["all", "care"] },
-    { to: "/health-records", icon: "/icons/document.svg", label: "Records", modes: ["all", "care"] },
-];
-
 const DesktopNav = ({ avatarUrl, initials }: DesktopNavProps) => {
     const { signOut, userRole } = useAuth();
     const { mode } = useAppMode();
     const { unreadCount } = useUnreadMessages();
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const allNavItems = useMemo(() => [
+        { to: "/feed", icon: "/icons/home.svg", label: t("nav.home"), modes: ["all", "care", "community"] },
+        { to: "/communities", icon: "/icons/community.svg", label: t("nav.communities"), modes: ["all", "community"] },
+        { to: "/providers", icon: "/icons/provider.svg", label: t("nav.browse"), modes: ["all", "care"] },
+        { to: "/messages", icon: "/icons/message.svg", label: t("nav.chats"), modes: ["all", "care", "community"], badgeKey: "messages" },
+        { to: "/notifications", icon: "/icons/notification.svg", label: t("nav.notifications"), modes: ["all", "care", "community"] },
+        { to: "/ai-chat", icon: "/icons/lightbulb.svg", label: t("nav.ai"), modes: ["all", "care"] },
+        { to: "/health-records", icon: "/icons/document.svg", label: t("nav.records"), modes: ["all", "care"] },
+    ], [t]);
 
     const navItems = useMemo(() => {
         return allNavItems.filter(item => item.modes.includes(mode));
-    }, [mode]);
+    }, [mode, allNavItems]);
 
     return (
         <nav className="hidden lg:flex items-center gap-0.5">
@@ -74,29 +76,29 @@ const DesktopNav = ({ avatarUrl, initials }: DesktopNavProps) => {
                             </AvatarFallback>
                         </Avatar>
                         <span className="text-[11px] font-medium mt-0.5 flex items-center gap-0.5">
-                            Me <ChevronDown className="h-3 w-3" />
+                            {t("nav.me")} <ChevronDown className="h-3 w-3" />
                         </span>
                     </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem onClick={() => navigate("/profile")}>
-                        <User className="h-4 w-4 mr-2" /> My Profile
+                        <User className="h-4 w-4 mr-2" /> {t("nav.myProfile")}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate("/dashboard")}>
-                        Dashboard
+                        {t("nav.dashboard")}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate("/settings")}>
-                        Settings
+                        {t("nav.settings")}
                     </DropdownMenuItem>
                     {userRole === "member" && (
                         <DropdownMenuItem onClick={() => navigate("/upgrade-to-provider")}>
-                            Become a Professional
+                            {t("nav.becomeProvider")}
                         </DropdownMenuItem>
                     )}
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => { signOut(); navigate("/"); }}>
-                        Sign Out
+                        {t("common.signOut")}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

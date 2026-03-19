@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   LayoutDashboard, LogOut, User, Phone, Stethoscope, HeartPulse, ShieldCheck, Clock, XCircle, ArrowUpRight, PenSquare,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ProfileData {
   full_name: string;
@@ -23,6 +24,7 @@ interface ProfileData {
 const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
   const { user, userRole, signOut } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -56,19 +58,19 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
   const isProvider = userRole === "provider";
   const isMember = userRole === "member";
 
-  const roleLabel = isProvider ? "Healthcare Professional" : "Member";
+  const roleLabel = isProvider ? t("profile.healthcareProfessional") : t("profile.member");
   const RoleIcon = isProvider ? Stethoscope : HeartPulse;
 
   const VerificationBadge = () => {
     if (!isProvider || !verificationStatus) return null;
     if (verificationStatus === "verified") {
-      return <Badge variant="default" className="gap-1 text-xs bg-primary"><ShieldCheck className="h-3 w-3" />Verified</Badge>;
+      return <Badge variant="default" className="gap-1 text-xs bg-primary"><ShieldCheck className="h-3 w-3" />{t("profile.verified")}</Badge>;
     }
     if (verificationStatus === "pending") {
-      return <Badge variant="secondary" className="gap-1 text-xs"><Clock className="h-3 w-3" />Pending Verification</Badge>;
+      return <Badge variant="secondary" className="gap-1 text-xs"><Clock className="h-3 w-3" />{t("profile.pendingVerification")}</Badge>;
     }
     if (verificationStatus === "rejected") {
-      return <Badge variant="destructive" className="gap-1 text-xs"><XCircle className="h-3 w-3" />Rejected</Badge>;
+      return <Badge variant="destructive" className="gap-1 text-xs"><XCircle className="h-3 w-3" />{t("profile.rejected")}</Badge>;
     }
     return null;
   };
@@ -83,7 +85,7 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent side="left" className="w-[300px] sm:w-[340px] p-0">
         <SheetHeader className="p-6 pb-4">
-          <SheetTitle className="sr-only">Profile</SheetTitle>
+          <SheetTitle className="sr-only">{t("nav.profile")}</SheetTitle>
         </SheetHeader>
 
         <div className="px-6 pb-4">
@@ -122,7 +124,7 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
             </div>
           )}
           {!profile?.phone && (
-            <p className="text-sm text-muted-foreground">No details added yet.</p>
+            <p className="text-sm text-muted-foreground">{t("profile.noDetailsAdded")}</p>
           )}
         </div>
 
@@ -130,13 +132,13 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
 
         <div className="px-3 py-3 space-y-1">
           <Button variant="ghost" className="w-full justify-start gap-3" onClick={() => handleNav("/dashboard")}>
-            <LayoutDashboard className="h-4 w-4" /> Dashboard
+            <LayoutDashboard className="h-4 w-4" /> {t("sidebar.dashboard")}
           </Button>
           <Button variant="ghost" className="w-full justify-start gap-3" onClick={() => handleNav("/profile")}>
-            <User className="h-4 w-4" /> My Profile
+            <User className="h-4 w-4" /> {t("sidebar.myProfile")}
           </Button>
           <Button variant="ghost" className="w-full justify-start gap-3" onClick={() => handleNav("/post")}>
-            <PenSquare className="h-4 w-4" /> Create Post
+            <PenSquare className="h-4 w-4" /> {t("sidebar.createPost")}
           </Button>
         </div>
 
@@ -149,7 +151,7 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
                 className="w-full justify-start gap-3 border-primary text-primary hover:bg-primary/5"
                 onClick={() => handleNav("/upgrade-to-provider")}
               >
-                <ArrowUpRight className="h-4 w-4" /> Become a Healthcare Professional
+                <ArrowUpRight className="h-4 w-4" /> {t("sidebar.becomeProvider")}
               </Button>
             </div>
           </>
@@ -158,7 +160,7 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
         <Separator />
 
         <div className="px-3 py-3 flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Theme</span>
+          <span className="text-sm text-muted-foreground">{t("sidebar.theme")}</span>
           <ThemeSwitcher />
         </div>
 
@@ -170,7 +172,7 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
             className="w-full justify-start gap-3 text-destructive hover:text-destructive"
             onClick={() => { signOut(); setOpen(false); navigate("/"); }}
           >
-            <LogOut className="h-4 w-4" /> Sign Out
+            <LogOut className="h-4 w-4" /> {t("sidebar.signOut")}
           </Button>
         </div>
       </SheetContent>
