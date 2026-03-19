@@ -134,8 +134,8 @@ const Notifications = () => {
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <Bell className="h-12 w-12 text-muted-foreground/40 mb-4" />
-              <p className="text-lg font-medium text-muted-foreground">No notifications yet</p>
-              <p className="text-sm text-muted-foreground/70 mt-1">We'll notify you when something happens</p>
+              <p className="text-lg font-medium text-muted-foreground">{t("notifications.noNotifications")}</p>
+              <p className="text-sm text-muted-foreground/70 mt-1">{t("notifications.notifyWhen")}</p>
             </div>
           ) : (
             <div className="space-y-2">

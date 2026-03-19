@@ -172,10 +172,10 @@ const Communities = () => {
                     ) : communities.length === 0 ? (
                         <div className="text-center py-20">
                             <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold text-foreground">No communities found</h3>
-                            <p className="text-muted-foreground text-sm mb-4">Try a different category or create your own</p>
+                            <h3 className="text-lg font-semibold text-foreground">{t("communities.noCommunities")}</h3>
+                            <p className="text-muted-foreground text-sm mb-4">{t("communities.tryDifferent")}</p>
                             <Button onClick={() => setDialogOpen(true)} variant="outline" className="gap-2">
-                                <Plus className="h-4 w-4" /> Create Community
+                                <Plus className="h-4 w-4" /> {t("communities.createCommunity")}
                             </Button>
                         </div>
                     ) : (
