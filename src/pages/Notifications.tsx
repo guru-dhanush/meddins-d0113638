@@ -33,6 +33,7 @@ const typeIcon: Record<string, React.ReactNode> = {
 const Notifications = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
