@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { useTranslation } from "react-i18next";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -23,8 +24,8 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, onboardingCompleted, loading: authLoading } = useAuth();
+  const { t } = useTranslation();
 
-  // Redirect authenticated users away from auth page
   useEffect(() => {
     if (!authLoading && user) {
       if (onboardingCompleted === false) {
@@ -32,7 +33,6 @@ const Auth = () => {
       } else if (onboardingCompleted === true) {
         navigate("/");
       }
-      // If onboardingCompleted is null, still loading — don't redirect yet
     }
   }, [user, onboardingCompleted, authLoading, navigate]);
 
@@ -42,7 +42,7 @@ const Auth = () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
-      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
+      toast({ title: t("auth.signInFailed"), description: error.message, variant: "destructive" });
     }
   };
 
@@ -59,11 +59,11 @@ const Auth = () => {
     });
     setLoading(false);
     if (error) {
-      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+      toast({ title: t("auth.signUpFailed"), description: error.message, variant: "destructive" });
     } else {
       toast({
-        title: "Check your email",
-        description: "We've sent you a verification link. Please verify your email to continue.",
+        title: t("auth.checkEmail"),
+        description: t("auth.verificationSent"),
       });
     }
   };
@@ -74,13 +74,11 @@ const Auth = () => {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/onboarding",
       });
-      console.log("Google OAuth result:", result);
       if (result.error) {
-        toast({ title: "Google sign in failed", description: String(result.error), variant: "destructive" });
+        toast({ title: t("auth.signInFailed"), description: String(result.error), variant: "destructive" });
       }
     } catch (err) {
-      console.error("Google OAuth error:", err);
-      toast({ title: "Google sign in failed", description: String(err), variant: "destructive" });
+      toast({ title: t("auth.signInFailed"), description: String(err), variant: "destructive" });
     } finally {
       setGoogleLoading(false);
     }
@@ -105,12 +103,12 @@ const Auth = () => {
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
           </svg>
         )}
-        Continue with Google
+        {t("auth.continueWithGoogle")}
       </Button>
       <div className="relative my-4">
         <Separator />
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
-          or
+          {t("common.or")}
         </span>
       </div>
     </>
@@ -120,37 +118,37 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-md">
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <img src="logo.png" className="mx-auto rounded" alt="Meddin" style={{ height: "60px" ,}} />
+          <img src="logo.png" className="mx-auto rounded" alt="Meddin" style={{ height: "60px" }} />
         </Link>
 
-        <Card >
+        <Card>
           <Tabs defaultValue={defaultTab}>
             <CardHeader>
               <TabsList className="grid w-[200px]! mx-auto grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                <TabsTrigger value="signin">{t("common.signIn")}</TabsTrigger>
+                <TabsTrigger value="signup">{t("common.signUp")}</TabsTrigger>
               </TabsList>
             </CardHeader>
 
             <TabsContent value="signin">
               <CardHeader className="pt-0">
-                <CardTitle>Welcome back</CardTitle>
-                <CardDescription>Sign in to your account</CardDescription>
+                <CardTitle>{t("auth.welcomeBack")}</CardTitle>
+                <CardDescription>{t("auth.signInToAccount")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <GoogleButton />
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
+                    <Label htmlFor="signin-email">{t("auth.email")}</Label>
                     <Input id="signin-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signin-password">Password</Label>
+                    <Label htmlFor="signin-password">{t("auth.password")}</Label>
                     <Input id="signin-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Sign In
+                    {t("auth.signInButton")}
                   </Button>
                 </form>
               </CardContent>
@@ -158,27 +156,27 @@ const Auth = () => {
 
             <TabsContent value="signup">
               <CardHeader className="pt-0">
-                <CardTitle>Create an account</CardTitle>
-                <CardDescription>Join Meddin today</CardDescription>
+                <CardTitle>{t("auth.createAccount")}</CardTitle>
+                <CardDescription>{t("auth.joinMeddin")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <GoogleButton />
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
+                    <Label htmlFor="signup-name">{t("auth.fullName")}</Label>
                     <Input id="signup-name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
+                    <Label htmlFor="signup-email">{t("auth.email")}</Label>
                     <Input id="signup-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
+                    <Label htmlFor="signup-password">{t("auth.password")}</Label>
                     <Input id="signup-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Create Account
+                    {t("auth.createAccountButton")}
                   </Button>
                 </form>
               </CardContent>
