@@ -163,6 +163,25 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
         <Separator />
 
         <div className="px-3 py-3 flex items-center justify-between">
+          <span className="text-sm text-muted-foreground flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            {t("settings.language")}
+          </span>
+          <Select value={i18n.language?.substring(0, 2)} onValueChange={(val) => i18n.changeLanguage(val)}>
+            <SelectTrigger className="w-[110px] h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="de">Deutsch</SelectItem>
+              <SelectItem value="fi">Suomi</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <Separator />
+
+        <div className="px-3 py-3 flex items-center justify-between">
           <span className="text-sm text-muted-foreground">{t("sidebar.theme")}</span>
           <ThemeSwitcher />
         </div>
