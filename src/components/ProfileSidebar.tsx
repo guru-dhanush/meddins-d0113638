@@ -27,7 +27,7 @@ interface ProfileData {
 const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
   const { user, userRole, signOut } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
