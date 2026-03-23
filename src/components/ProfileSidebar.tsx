@@ -11,7 +11,10 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import {
-  LayoutDashboard, LogOut, User, Phone, Stethoscope, HeartPulse, ShieldCheck, Clock, XCircle, ArrowUpRight, PenSquare,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+import {
+  LayoutDashboard, LogOut, User, Phone, Stethoscope, HeartPulse, ShieldCheck, Clock, XCircle, ArrowUpRight, PenSquare, Globe,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -24,7 +27,7 @@ interface ProfileData {
 const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
   const { user, userRole, signOut } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -156,6 +159,25 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
             </div>
           </>
         )}
+
+        <Separator />
+
+        <div className="px-3 py-3 flex items-center justify-between">
+          <span className="text-sm text-muted-foreground flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            {t("settings.language")}
+          </span>
+          <Select value={i18n.language?.substring(0, 2)} onValueChange={(val) => i18n.changeLanguage(val)}>
+            <SelectTrigger className="w-[110px] h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="de">Deutsch</SelectItem>
+              <SelectItem value="fi">Suomi</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <Separator />
 
