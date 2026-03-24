@@ -115,7 +115,7 @@ const App = () => (
               <Route path="/settings" element={<OnboardingGuard><Settings /></OnboardingGuard>} />
               <Route path="/connections" element={<OnboardingGuard><Connections /></OnboardingGuard>} />
               <Route path="/connections/:id" element={<OnboardingGuard><Connections /></OnboardingGuard>} />
-              <Route path="/health-records" element={<OnboardingGuard><HealthRecords /></OnboardingGuard>} />
+              <Route path="/health-records" element={<OnboardingGuard seekerOnly><HealthRecords /></OnboardingGuard>} />
 
               {/* Org routes */}
               <Route path="/org/dashboard" element={<OnboardingGuard><OrgDashboard /></OnboardingGuard>} />
