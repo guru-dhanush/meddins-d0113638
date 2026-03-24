@@ -14,9 +14,11 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  LayoutDashboard, LogOut, User, Phone, Stethoscope, HeartPulse, ShieldCheck, Clock, XCircle, ArrowUpRight, PenSquare, Globe,
+  LayoutDashboard, LogOut, User, Phone, Stethoscope, HeartPulse, ShieldCheck, Clock, XCircle, ArrowUpRight, PenSquare, Globe, Compass,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useExplorationMode } from "@/contexts/ExplorationModeContext";
+import { Switch } from "@/components/ui/switch";
 
 interface ProfileData {
   full_name: string;
