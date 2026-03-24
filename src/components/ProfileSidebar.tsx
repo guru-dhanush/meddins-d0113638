@@ -30,6 +30,7 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
   const { user, userRole, signOut } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const { explorationEnabled, setExplorationEnabled } = useExplorationMode();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
