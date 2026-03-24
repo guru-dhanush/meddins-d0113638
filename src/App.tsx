@@ -107,7 +107,7 @@ const App = () => (
               <Route path="/messages" element={<OnboardingGuard><Chats /></OnboardingGuard>} />
               <Route path="/upgrade-to-provider" element={<OnboardingGuard><UpgradeToProvider /></OnboardingGuard>} />
               <Route path="/invitations" element={<OnboardingGuard><Invitations /></OnboardingGuard>} />
-              <Route path="/ai-chat" element={<OnboardingGuard><Chats /></OnboardingGuard>} />
+              <Route path="/ai-chat" element={<OnboardingGuard seekerOnly><Chats /></OnboardingGuard>} />
               <Route path="/communities" element={<OnboardingGuard><Communities /></OnboardingGuard>} />
               <Route path="/community/:slug" element={<OnboardingGuard><CommunityPage /></OnboardingGuard>} />
               <Route path="/notifications" element={<OnboardingGuard><Notifications /></OnboardingGuard>} />
