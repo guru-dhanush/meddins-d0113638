@@ -81,6 +81,7 @@ const App = () => (
         <ThemeProvider>
           <CurrencyProvider>
           <AppModeProvider>
+          <ExplorationModeProvider>
           <AuthProvider>
             <VideoCallProvider>
             <VideoCallOverlay />
