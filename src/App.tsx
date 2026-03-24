@@ -41,8 +41,8 @@ import HealthRecords from "./pages/HealthRecords";
 const queryClient = new QueryClient();
 
 // ─── Onboarding guard: redirects to /onboarding if not completed ───────────
-const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
-  const { user, onboardingCompleted, loading } = useAuth();
+const OnboardingGuard = ({ children, seekerOnly, explorationRequired }: { children: React.ReactNode; seekerOnly?: boolean; explorationRequired?: boolean }) => {
+  const { user, onboardingCompleted, loading, userRole } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -53,15 +53,20 @@ const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  // Not logged in — redirect to auth
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
 
-  // Logged in but onboarding not done — redirect to onboarding
-  // (skip if already on /onboarding or /auth to avoid loops)
   if (onboardingCompleted === false && location.pathname !== "/onboarding" && location.pathname !== "/auth") {
     return <Navigate to="/onboarding" replace />;
+  }
+
+  // Provider trying to access seeker-only routes without exploration mode
+  if (seekerOnly && userRole === "provider") {
+    const explorationEnabled = localStorage.getItem("exploration-mode") === "true";
+    if (!explorationEnabled) {
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   return <>{children}</>;
