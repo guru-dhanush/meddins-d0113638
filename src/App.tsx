@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { VideoCallProvider } from "@/contexts/VideoCallContext";
 import { AppModeProvider } from "@/contexts/AppModeContext";
+import { ExplorationModeProvider } from "@/contexts/ExplorationModeContext";
 import VideoCallOverlay from "@/components/video-call/VideoCallOverlay";
 import IncomingCallDialog from "@/components/video-call/IncomingCallDialog";
 import { Loader2 } from "lucide-react";
