@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAppMode } from "@/contexts/AppModeContext";
+import { useExplorationMode } from "@/contexts/ExplorationModeContext";
 import { useUnreadMessages } from "@/hooks/use-unread-messages";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
@@ -23,23 +24,36 @@ interface DesktopNavProps {
 const DesktopNav = ({ avatarUrl, initials }: DesktopNavProps) => {
     const { signOut, userRole } = useAuth();
     const { mode } = useAppMode();
+    const { explorationEnabled } = useExplorationMode();
     const { unreadCount } = useUnreadMessages();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+    const isProvider = userRole === "provider";
+
     const allNavItems = useMemo(() => [
-        { to: "/feed", icon: "/icons/home.svg", label: t("nav.home"), modes: ["all", "care", "community"] },
-        { to: "/communities", icon: "/icons/community.svg", label: t("nav.communities"), modes: ["all", "community"] },
-        { to: "/providers", icon: "/icons/provider.svg", label: t("nav.browse"), modes: ["all", "care"] },
-        { to: "/messages", icon: "/icons/message.svg", label: t("nav.chats"), modes: ["all", "care", "community"], badgeKey: "messages" },
-        { to: "/notifications", icon: "/icons/notification.svg", label: t("nav.notifications"), modes: ["all", "care", "community"] },
-        { to: "/ai-chat", icon: "/icons/lightbulb.svg", label: t("nav.ai"), modes: ["all", "care"] },
-        { to: "/health-records", icon: "/icons/document.svg", label: t("nav.records"), modes: ["all", "care"] },
+        { to: "/feed", icon: "/icons/home.svg", label: t("nav.home"), modes: ["all", "care", "community"], roles: ["all"] },
+        { to: "/communities", icon: "/icons/community.svg", label: t("nav.communities"), modes: ["all", "community"], roles: ["all"], explorationOnly: true },
+        { to: "/providers", icon: "/icons/provider.svg", label: t("nav.browse"), modes: ["all", "care"], roles: ["member", "organization"], explorationOnly: true },
+        { to: "/messages", icon: "/icons/message.svg", label: t("nav.chats"), modes: ["all", "care", "community"], roles: ["all"], badgeKey: "messages" },
+        { to: "/notifications", icon: "/icons/notification.svg", label: t("nav.notifications"), modes: ["all", "care", "community"], roles: ["all"] },
+        { to: "/dashboard", icon: "/icons/calender.svg", label: t("nav.dashboard"), modes: ["all", "care"], roles: ["provider"] },
+        { to: "/ai-chat", icon: "/icons/lightbulb.svg", label: t("nav.ai"), modes: ["all", "care"], roles: ["member"], explorationOnly: true },
+        { to: "/health-records", icon: "/icons/document.svg", label: t("nav.records"), modes: ["all", "care"], roles: ["member"], explorationOnly: true },
     ], [t]);
 
     const navItems = useMemo(() => {
-        return allNavItems.filter(item => item.modes.includes(mode));
-    }, [mode, allNavItems]);
+        return allNavItems.filter(item => {
+            if (!item.modes.includes(mode)) return false;
+            // Role filtering
+            const matchesRole = item.roles.includes("all") || item.roles.includes(userRole || "member");
+            // For providers: explorationOnly items need exploration mode enabled
+            if (isProvider && item.explorationOnly && !explorationEnabled) return false;
+            // For non-providers: show if role matches (explorationOnly doesn't apply)
+            if (!isProvider) return matchesRole || item.roles.includes("all");
+            return matchesRole || item.roles.includes("all");
+        });
+    }, [mode, allNavItems, userRole, isProvider, explorationEnabled]);
 
     return (
         <nav className="hidden lg:flex items-center gap-0.5">

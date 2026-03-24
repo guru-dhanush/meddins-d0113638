@@ -163,6 +163,19 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
           </>
         )}
 
+        {isProvider && (
+          <>
+            <Separator />
+            <div className="px-3 py-3 flex items-center justify-between">
+              <span className="text-sm text-muted-foreground flex items-center gap-2">
+                <Compass className="h-4 w-4" />
+                {t("sidebar.explorationMode")}
+              </span>
+              <Switch checked={explorationEnabled} onCheckedChange={setExplorationEnabled} />
+            </div>
+          </>
+        )}
+
         <Separator />
 
         <div className="px-3 py-3 flex items-center justify-between">
