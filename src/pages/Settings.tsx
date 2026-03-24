@@ -99,6 +99,7 @@ const Settings = () => {
   const { theme, setTheme } = useTheme();
   const { userCurrency, setCurrency } = useCurrency();
   const { t, i18n } = useTranslation();
+  const { explorationEnabled, setExplorationEnabled } = useExplorationMode();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeSection = searchParams.get("section") || "account";
