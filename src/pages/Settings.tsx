@@ -527,6 +527,27 @@ const Settings = () => {
                 </Select>
               </CardContent>
             </Card>
+
+            {isProvider && (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Compass className="h-4 w-4 text-primary" />
+                    {t("sidebar.explorationMode")}
+                  </CardTitle>
+                  <CardDescription>{t("sidebar.explorationModeDesc")}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <Label className="cursor-pointer">
+                      <p className="text-sm font-medium">{t("sidebar.explorationMode")}</p>
+                      <p className="text-xs text-muted-foreground">{t("sidebar.explorationModeDesc")}</p>
+                    </Label>
+                    <Switch checked={explorationEnabled} onCheckedChange={setExplorationEnabled} />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         );
 
