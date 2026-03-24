@@ -132,6 +132,7 @@ const App = () => (
             </Routes>
             </VideoCallProvider>
           </AuthProvider>
+          </ExplorationModeProvider>
           </AppModeProvider>
           </CurrencyProvider>
         </ThemeProvider>
