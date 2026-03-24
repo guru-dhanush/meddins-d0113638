@@ -418,7 +418,9 @@
     "createPost": "Create Post",
     "becomeProvider": "Become a Healthcare Professional",
     "theme": "Theme",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "explorationMode": "Exploration Mode",
+    "explorationModeDesc": "Enable to browse providers, communities, feed, and more"
   },
   "modes": {
     "switchMode": "Switch Mode",

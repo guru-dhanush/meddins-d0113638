@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { VideoCallProvider } from "@/contexts/VideoCallContext";
 import { AppModeProvider } from "@/contexts/AppModeContext";
+import { ExplorationModeProvider } from "@/contexts/ExplorationModeContext";
 import VideoCallOverlay from "@/components/video-call/VideoCallOverlay";
 import IncomingCallDialog from "@/components/video-call/IncomingCallDialog";
 import { Loader2 } from "lucide-react";
@@ -40,8 +41,8 @@ import HealthRecords from "./pages/HealthRecords";
 const queryClient = new QueryClient();
 
 // ─── Onboarding guard: redirects to /onboarding if not completed ───────────
-const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
-  const { user, onboardingCompleted, loading } = useAuth();
+const OnboardingGuard = ({ children, seekerOnly, explorationRequired }: { children: React.ReactNode; seekerOnly?: boolean; explorationRequired?: boolean }) => {
+  const { user, onboardingCompleted, loading, userRole } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -52,15 +53,20 @@ const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  // Not logged in — redirect to auth
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
 
-  // Logged in but onboarding not done — redirect to onboarding
-  // (skip if already on /onboarding or /auth to avoid loops)
   if (onboardingCompleted === false && location.pathname !== "/onboarding" && location.pathname !== "/auth") {
     return <Navigate to="/onboarding" replace />;
+  }
+
+  // Provider trying to access seeker-only routes without exploration mode
+  if (seekerOnly && userRole === "provider") {
+    const explorationEnabled = localStorage.getItem("exploration-mode") === "true";
+    if (!explorationEnabled) {
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   return <>{children}</>;
@@ -75,6 +81,7 @@ const App = () => (
         <ThemeProvider>
           <CurrencyProvider>
           <AppModeProvider>
+          <ExplorationModeProvider>
           <AuthProvider>
             <VideoCallProvider>
             <VideoCallOverlay />
@@ -92,7 +99,7 @@ const App = () => (
               <Route path="/" element={<OnboardingGuard><Feed /></OnboardingGuard>} />
               <Route path="/feed" element={<OnboardingGuard><Feed /></OnboardingGuard>} />
               <Route path="/dashboard" element={<OnboardingGuard><Dashboard /></OnboardingGuard>} />
-              <Route path="/providers" element={<OnboardingGuard><BrowseProviders /></OnboardingGuard>} />
+              <Route path="/providers" element={<OnboardingGuard seekerOnly><BrowseProviders /></OnboardingGuard>} />
               <Route path="/provider/:id" element={<OnboardingGuard><ProviderProfile /></OnboardingGuard>} />
               <Route path="/profile" element={<OnboardingGuard><UserProfile /></OnboardingGuard>} />
               <Route path="/post" element={<OnboardingGuard><CreatePost /></OnboardingGuard>} />
@@ -100,7 +107,7 @@ const App = () => (
               <Route path="/messages" element={<OnboardingGuard><Chats /></OnboardingGuard>} />
               <Route path="/upgrade-to-provider" element={<OnboardingGuard><UpgradeToProvider /></OnboardingGuard>} />
               <Route path="/invitations" element={<OnboardingGuard><Invitations /></OnboardingGuard>} />
-              <Route path="/ai-chat" element={<OnboardingGuard><Chats /></OnboardingGuard>} />
+              <Route path="/ai-chat" element={<OnboardingGuard seekerOnly><Chats /></OnboardingGuard>} />
               <Route path="/communities" element={<OnboardingGuard><Communities /></OnboardingGuard>} />
               <Route path="/community/:slug" element={<OnboardingGuard><CommunityPage /></OnboardingGuard>} />
               <Route path="/notifications" element={<OnboardingGuard><Notifications /></OnboardingGuard>} />
@@ -108,7 +115,7 @@ const App = () => (
               <Route path="/settings" element={<OnboardingGuard><Settings /></OnboardingGuard>} />
               <Route path="/connections" element={<OnboardingGuard><Connections /></OnboardingGuard>} />
               <Route path="/connections/:id" element={<OnboardingGuard><Connections /></OnboardingGuard>} />
-              <Route path="/health-records" element={<OnboardingGuard><HealthRecords /></OnboardingGuard>} />
+              <Route path="/health-records" element={<OnboardingGuard seekerOnly><HealthRecords /></OnboardingGuard>} />
 
               {/* Org routes */}
               <Route path="/org/dashboard" element={<OnboardingGuard><OrgDashboard /></OnboardingGuard>} />
@@ -125,6 +132,7 @@ const App = () => (
             </Routes>
             </VideoCallProvider>
           </AuthProvider>
+          </ExplorationModeProvider>
           </AppModeProvider>
           </CurrencyProvider>
         </ThemeProvider>

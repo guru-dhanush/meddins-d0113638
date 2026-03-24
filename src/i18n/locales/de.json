@@ -302,7 +302,9 @@
     "createPost": "Beitrag erstellen",
     "becomeProvider": "Gesundheitsfachkraft werden",
     "theme": "Design",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "explorationMode": "Erkundungsmodus",
+    "explorationModeDesc": "Aktivieren, um Anbieter, Communities, Feed und mehr zu durchsuchen"
   },
   "modes": {
     "switchMode": "Modus wechseln",

@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
+import { useExplorationMode } from "@/contexts/ExplorationModeContext";
 import { useTranslation } from "react-i18next";
 import AppLayout from "@/components/AppLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,6 +45,7 @@ import {
   KeyRound,
   Mail,
   Globe,
+  Compass,
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -97,6 +99,7 @@ const Settings = () => {
   const { theme, setTheme } = useTheme();
   const { userCurrency, setCurrency } = useCurrency();
   const { t, i18n } = useTranslation();
+  const { explorationEnabled, setExplorationEnabled } = useExplorationMode();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeSection = searchParams.get("section") || "account";
@@ -524,6 +527,27 @@ const Settings = () => {
                 </Select>
               </CardContent>
             </Card>
+
+            {isProvider && (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Compass className="h-4 w-4 text-primary" />
+                    {t("sidebar.explorationMode")}
+                  </CardTitle>
+                  <CardDescription>{t("sidebar.explorationModeDesc")}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <Label className="cursor-pointer">
+                      <p className="text-sm font-medium">{t("sidebar.explorationMode")}</p>
+                      <p className="text-xs text-muted-foreground">{t("sidebar.explorationModeDesc")}</p>
+                    </Label>
+                    <Switch checked={explorationEnabled} onCheckedChange={setExplorationEnabled} />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         );
 

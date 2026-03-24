@@ -1,6 +1,7 @@
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAppMode, AppMode } from "@/contexts/AppModeContext";
+import { useExplorationMode } from "@/contexts/ExplorationModeContext";
 import { useUnreadMessages } from "@/hooks/use-unread-messages";
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -9,11 +10,14 @@ import { Heart, Users, Layers, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const BottomNav = () => {
-  const { user } = useAuth();
+  const { user, userRole } = useAuth();
   const { mode, setMode } = useAppMode();
+  const { explorationEnabled } = useExplorationMode();
   const { unreadCount } = useUnreadMessages();
   const [showModeSheet, setShowModeSheet] = useState(false);
   const { t } = useTranslation();
+
+  const isProvider = userRole === "provider";
 
   const modes: { value: AppMode; label: string; icon: typeof Layers; desc: string }[] = [
     { value: "all", label: t("modes.all"), icon: Layers, desc: t("modes.allDesc") },
@@ -23,14 +27,23 @@ const BottomNav = () => {
 
   const navItems = useMemo(() => {
     const allItems = [
-      { to: "/feed", icon: "/icons/home.svg", label: t("nav.home"), modes: ["all", "care", "community"] },
-      { to: "/communities", icon: "/icons/community.svg", label: t("nav.communities"), modes: ["all", "community"] },
-      { to: "/providers", icon: "/icons/provider.svg", label: t("nav.browse"), modes: ["all", "care"] },
-      { to: "/messages", icon: "/icons/message.svg", label: t("nav.chats"), modes: ["all", "care", "community"], badge: unreadCount },
-      { to: user ? `/user/${user.id}` : "/profile", icon: "/icons/setting.svg", label: t("nav.profile"), modes: ["all", "care", "community"] },
+      { to: "/feed", icon: "/icons/home.svg", label: t("nav.home"), modes: ["all", "care", "community"], explorationOnly: false },
+      { to: "/communities", icon: "/icons/community.svg", label: t("nav.communities"), modes: ["all", "community"], explorationOnly: true },
+      { to: "/providers", icon: "/icons/provider.svg", label: t("nav.browse"), modes: ["all", "care"], explorationOnly: true, seekerOnly: true },
+      { to: isProvider ? "/dashboard" : "/messages", icon: isProvider ? "/icons/calender.svg" : "/icons/message.svg", label: isProvider ? t("nav.dashboard") : t("nav.chats"), modes: ["all", "care", "community"], badge: isProvider ? undefined : unreadCount, explorationOnly: false },
+      { to: "/messages", icon: "/icons/message.svg", label: t("nav.chats"), modes: ["all", "care", "community"], badge: unreadCount, explorationOnly: false, providerOnly: true },
+      { to: user ? `/user/${user.id}` : "/profile", icon: "/icons/setting.svg", label: t("nav.profile"), modes: ["all", "care", "community"], explorationOnly: false },
     ];
-    return allItems.filter(item => item.modes.includes(mode));
-  }, [mode, user, unreadCount, t]);
+    return allItems.filter(item => {
+      if (!item.modes.includes(mode)) return false;
+      if (item.seekerOnly && isProvider) return false;
+      if (item.providerOnly && !isProvider) return false;
+      if (isProvider && item.explorationOnly && !explorationEnabled) return false;
+      // Avoid duplicate dashboard/messages for provider
+      if (isProvider && !item.providerOnly && item.to === "/messages") return false;
+      return true;
+    });
+  }, [mode, user, unreadCount, t, isProvider, explorationEnabled]);
 
   const handleModeSelect = (newMode: AppMode) => {
     setMode(newMode);

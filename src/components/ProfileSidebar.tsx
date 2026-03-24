@@ -14,9 +14,11 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  LayoutDashboard, LogOut, User, Phone, Stethoscope, HeartPulse, ShieldCheck, Clock, XCircle, ArrowUpRight, PenSquare, Globe,
+  LayoutDashboard, LogOut, User, Phone, Stethoscope, HeartPulse, ShieldCheck, Clock, XCircle, ArrowUpRight, PenSquare, Globe, Compass,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useExplorationMode } from "@/contexts/ExplorationModeContext";
+import { Switch } from "@/components/ui/switch";
 
 interface ProfileData {
   full_name: string;
@@ -28,6 +30,7 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
   const { user, userRole, signOut } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const { explorationEnabled, setExplorationEnabled } = useExplorationMode();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -156,6 +159,19 @@ const ProfileSidebar = ({ children }: { children: React.ReactNode }) => {
               >
                 <ArrowUpRight className="h-4 w-4" /> {t("sidebar.becomeProvider")}
               </Button>
+            </div>
+          </>
+        )}
+
+        {isProvider && (
+          <>
+            <Separator />
+            <div className="px-3 py-3 flex items-center justify-between">
+              <span className="text-sm text-muted-foreground flex items-center gap-2">
+                <Compass className="h-4 w-4" />
+                {t("sidebar.explorationMode")}
+              </span>
+              <Switch checked={explorationEnabled} onCheckedChange={setExplorationEnabled} />
             </div>
           </>
         )}
