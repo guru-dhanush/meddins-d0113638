@@ -1,6 +1,7 @@
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAppMode, AppMode } from "@/contexts/AppModeContext";
+import { useExplorationMode } from "@/contexts/ExplorationModeContext";
 import { useUnreadMessages } from "@/hooks/use-unread-messages";
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
