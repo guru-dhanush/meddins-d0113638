@@ -99,7 +99,7 @@ const App = () => (
               <Route path="/" element={<OnboardingGuard><Feed /></OnboardingGuard>} />
               <Route path="/feed" element={<OnboardingGuard><Feed /></OnboardingGuard>} />
               <Route path="/dashboard" element={<OnboardingGuard><Dashboard /></OnboardingGuard>} />
-              <Route path="/providers" element={<OnboardingGuard><BrowseProviders /></OnboardingGuard>} />
+              <Route path="/providers" element={<OnboardingGuard seekerOnly><BrowseProviders /></OnboardingGuard>} />
               <Route path="/provider/:id" element={<OnboardingGuard><ProviderProfile /></OnboardingGuard>} />
               <Route path="/profile" element={<OnboardingGuard><UserProfile /></OnboardingGuard>} />
               <Route path="/post" element={<OnboardingGuard><CreatePost /></OnboardingGuard>} />
