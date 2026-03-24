@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
+import { useExplorationMode } from "@/contexts/ExplorationModeContext";
 import { useTranslation } from "react-i18next";
 import AppLayout from "@/components/AppLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
