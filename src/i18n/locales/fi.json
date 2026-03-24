@@ -302,7 +302,9 @@
     "createPost": "Luo julkaisu",
     "becomeProvider": "Ryhdy terveydenhuollon ammattilaiseksi",
     "theme": "Teema",
-    "signOut": "Kirjaudu ulos"
+    "signOut": "Kirjaudu ulos",
+    "explorationMode": "Selailutila",
+    "explorationModeDesc": "Ota käyttöön selataksesi palveluntarjoajia, yhteisöjä, syötettä ja muuta"
   },
   "modes": {
     "switchMode": "Vaihda tilaa",
